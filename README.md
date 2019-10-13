@@ -1,3 +1,10 @@
+## Brandon Bil website hosted via github pages
+
+Below is the original Readme after creating the gatsby project using gatsby-starter-blog
+
+Starter was used to create the project and get a handle on how to use gatsby. Added TypeSript to it and further customized from there.
+
+
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.org">
