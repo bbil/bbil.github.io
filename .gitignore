@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# except
+!CNAME
+!.gitignore
+!out/
