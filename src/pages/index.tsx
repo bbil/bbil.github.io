@@ -1,84 +1,35 @@
-import React from 'react';
-import { Link, graphql } from 'gatsby';
+import * as React from 'react'
+import Link from 'next/link'
 
-import Bio from '../components/bio';
-import Layout from '../components/layout';
-import SEO from '../components/seo';
-import { rhythm } from '../utils/typography';
+import { readDir } from '@app/utils/fs'
 
-interface Props {
-    data: {
-        allMarkdownRemark: any
-        site: {
-            siteMetadata: {
-                title: string
-            };
-        };
-    };
-    location: Location;
+interface HomeProps {
+    slugs: string[]
 }
 
-const BlogIndex: React.FunctionComponent<Props> = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata.title
-  const posts = data.allMarkdownRemark.edges
-
-  return (
-    <Layout location={location} title={siteTitle}>
-        <SEO title="All posts" />
-        <Bio />
-        {posts.map(({ node }: any) => {
-            const title = node.frontmatter.title || node.fields.slug
+const Home: React.FC<HomeProps> = ({ slugs }) => (
+    <div>
+        slugs:
+        {slugs.map(slug => {
             return (
-                <article key={node.fields.slug}>
-                <header>
-                    <h3
-                    style={{
-                        marginBottom: rhythm(1 / 4),
-                    }}
-                    >
-                    <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
-                        {title}
+                <div key={slug}>
+                    <Link href={'/blog/' + slug}>
+                        <a>{'/blog/' + slug}</a>
                     </Link>
-                    </h3>
-                    <small>{node.frontmatter.date}</small>
-                </header>
-                <section>
-                    <p
-                    dangerouslySetInnerHTML={{
-                        __html: node.frontmatter.description || node.excerpt,
-                    }}
-                    />
-                </section>
-                </article>
+                </div>
             )
         })}
-    </Layout>
-  )
-};
+    </div>
+)
 
-export default BlogIndex
+export async function getStaticProps(): Promise<{ props: HomeProps }> {
+    const files = await readDir('posts')
 
-export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
+    return {
+        props: {
+            slugs: files.map(filename => filename.replace('.md', '')),
+        },
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, filter: {fields: { slug: {regex: "/blog/"}}}) {
-      edges {
-        node {
-          excerpt
-          fields {
-            slug
-          }
-          frontmatter {
-            date(formatString: "MMMM DD, YYYY")
-            title
-            description
-          }
-        }
-      }
-    }
-  }
-`
+}
+
+export default Home
