@@ -4,4 +4,7 @@
 # except
 !CNAME
 !.gitignore
-!out/
+!.bin
+!.bin/*
+!docs
+!docs/**
