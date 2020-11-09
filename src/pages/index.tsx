@@ -2,6 +2,7 @@ import * as React from 'react'
 import Link from 'next/link'
 
 import { readDir } from '@app/utils/fs'
+import Blog from '@app/blog'
 
 interface HomeProps {
     slugs: string[]
@@ -23,12 +24,12 @@ const Home: React.FC<HomeProps> = ({ slugs }) => (
 )
 
 export async function getStaticProps(): Promise<{ props: HomeProps }> {
-    const files = await readDir('posts')
+    const slugs = await Blog.getTitles()
 
     return {
         props: {
-            slugs: files.map(filename => filename.replace('.md', '')),
-        },
+            slugs
+        }
     }
 }
 

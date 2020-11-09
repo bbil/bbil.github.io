@@ -25,7 +25,7 @@ export async function getBlogDetails(
     return {
         html,
         // contents of gray matter metadata is not type-checked, convention only
-        meta: parsedMarkdown.data as { title: string; description: string },
+        meta: parsedMarkdown.data as { title: string; description: string }
     }
 }
 

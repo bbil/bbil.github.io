@@ -3,5 +3,5 @@ export type { BlogData } from './repository'
 
 export default {
     getDetails: getBlogDetails,
-    getTitles: getBlogTitles,
+    getTitles: getBlogTitles
 }

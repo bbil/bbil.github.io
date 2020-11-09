@@ -27,26 +27,16 @@ const Post: React.FC<PostProps> = ({ htmlString, data }) => {
     )
 }
 
-interface StaticQuery extends ParsedUrlQuery {
+interface SlugQuery extends ParsedUrlQuery {
     slug: string
 }
 
-export const getStaticPaths: GetStaticPaths<StaticQuery> = async () => {
-    const slugs = await Blog.getTitles()
-
-    const paths = slugs.map<{ params: StaticQuery }>(slug => ({
-        params: { slug },
-    }))
-
-    return {
-        paths,
-        fallback: false,
-    }
-}
-
+/**
+ * Get html content of blog post, plus metadata
+ */
 export const getStaticProps: GetStaticProps<
     PostProps,
-    StaticQuery
+    SlugQuery
 > = async context => {
     const params = context?.params ?? null
     if (!params) {
@@ -58,8 +48,24 @@ export const getStaticProps: GetStaticProps<
     return {
         props: {
             data: details.meta,
-            htmlString: details.html,
-        },
+            htmlString: details.html
+        }
+    }
+}
+
+/**
+ * Gets ALL slugs for blog posts
+ */
+export const getStaticPaths: GetStaticPaths<SlugQuery> = async () => {
+    const slugs = await Blog.getTitles()
+
+    const paths = slugs.map<{ params: SlugQuery }>(slug => ({
+        params: { slug }
+    }))
+
+    return {
+        paths,
+        fallback: false
     }
 }
 
